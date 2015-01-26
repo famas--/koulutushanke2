@@ -1,0 +1,134 @@
+
+<html>
+<head>
+<style>
+/* Styling */
+.blue, .div5 {
+  border-style: solid;
+  border-width: 2px;
+  padding: 2px;
+  margin-bottom: 2px;
+  
+}
+
+
+
+/* Container so we can see when we scroll */
+.blue {
+  border-color: blue;
+  width: 50%;
+  display: inline-block;
+  height: 800px;
+}
+
+/* Positiioning blue divs side-by-side */ 
+#wholePage {
+  white-space: nowrap;
+  
+ 
+}
+
+.div5 {
+		margin: 0px 0 0 0;
+		width: 4500px;
+		position:fixed;
+		float:left;
+  
+  
+	}
+
+.div7 {
+		border-style: solid;
+		border-color: #000;
+		border-width:1px;
+		float:left;
+		width:100px;
+		height:100px;
+		padding: 0px 0px 0px 0px;
+		}
+</style>
+<script>
+$(function () {
+  var $blue = $(".blue"),
+      $pg = $("#wholePage"),
+      $document = $(document),
+      left = 0,
+      scrollTimer = 0;
+  
+
+  
+  // Detect horizontal scroll start and stop.
+  $document.on("scroll", function () {
+    var docLeft = $document.scrollLeft();
+    if(left !== docLeft) {
+      var self = this, args = arguments;
+      if(!scrollTimer) {
+        // We've not yet (re)started the timer: It's the beginning of scrolling.
+        startHScroll.apply(self, args);
+      }
+      window.clearTimeout(scrollTimer);
+      scrollTimer = window.setTimeout(function () {
+        scrollTimer = 0;
+        // Our timer was never stopped: We've finished scrolling.
+        stopHScroll.apply(self, args);
+      }, 100);
+      left = docLeft;
+    }
+  });
+  
+  // Horizontal scroll started - Make div's absolutely positioned.
+  function startHScroll () {
+    console.log("Scroll Start");
+    $(".div5")
+    // Clear out any left-positioning set by stopHScroll.
+    .css("left","")
+    .each(function () {
+      var $this = $(this),
+          pos = $this.offset();
+      // Preserve our current vertical position...
+      $this.css("top", pos.top)
+    })
+    // ...before making it absolutely positioned.
+    .css("position", "absolute");
+  }
+  
+  // Horizontal scroll stopped - Make div's float again.
+  function stopHScroll () {
+    var leftScroll = $(window).scrollLeft();
+    console.log("Scroll Stop");
+    $(".div5")
+    // Clear out any top-positioning set by startHScroll.
+    .css("top","")
+    .each(function () {
+      var $this = $(this), 
+        pos = $this.position();
+      // Preserve our current horizontal position, munus the scroll position...
+      $this.css("left", pos.left-leftScroll);
+    })
+    // ...before making it fixed positioned.
+    .css("position", "fixed");
+  }
+});
+</script>
+</head>
+<body>
+
+<div id="wholePage">
+<div class="blue">
+<div class="div5">
+      <div class="div7">Koulutus</div>
+      <div class="div7">Koulutus</div> 
+      <div class="div7">Koulutus</div> 
+      <div class="div7">Koulutus</div> 
+      <div class="div7">Koulutus</div>
+      <div class="div7">Koulutus</div>
+      <div class="div7">Koulutus</div> 
+      <div class="div7">Koulutus</div> 
+      <div class="div7">Koulutus</div> 
+      <div class="div7">Koulutus</div>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

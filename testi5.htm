@@ -1,0 +1,17 @@
+<?php
+
+//sisällytetään yhteystidot
+include 'yhteys.php';
+
+
+
+// tallennetaan postatut tiedot variableihin
+
+$sql = mysql_query("SELECT * FROM koulutus");
+
+echo $sql;
+
+
+// suljetaan yhteys
+mysql_close();
+?>
